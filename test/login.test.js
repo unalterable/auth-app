@@ -1,5 +1,6 @@
 require('../babel');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 const { expect } = require('chai');
 const { db, server } = require('./helpers');
 
@@ -44,15 +45,17 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
     expect(data).to.be.a('string').that.equals('Authentication failed');
   });
 
-  it('reponds with 200, and responds with all the claims needed for a JWT', async () => {
+  it('reponds with 200, and responds with a JWT full of claims, and the same JWT in set-cookie header', async () => {
     const loginDetails = { username: 'testUser', password: 'testPassword' };
 
-    const { data, status } = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });
+    const { data, headers, status } = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });
 
     expect(status).to.equal(200);
-    expect(data).to.be.an('object').that.deep.equals({
+    expect(data).to.be.a('string');
+    expect(jwt.verify(data, 'an insecure secret')).to.be.an('object').that.deep.includes({
       account: { name: account.username },
       user: { name: account.username, emailAddress: account.emailAddress, roles },
     });
+    expect(headers['set-cookie'][0]).to.include(data);
   });
 });

@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 
@@ -39,12 +40,16 @@ const initItemController = ({ store }) => {
 
       const user = await userCollection.getById(account.users[0].id);
 
-      const response = {
+      const claims = {
         account: { name: account.name },
         user: { name: user.name, emailAddress: user.emailAddress, roles: user.roles },
       };
 
-      res.status(200).send(response);
+      const expiresIn = 60 * 60 * 24;
+      const token = jwt.sign(claims, 'an insecure secret', { expiresIn });
+
+      res.cookie('jwt', token, { secure: true, httpOnly: true, maxAge: expiresIn });
+      res.status(200).send(token);
     } catch (err) {
       res.status(401).send('Authentication failed');
     }
