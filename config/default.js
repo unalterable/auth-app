@@ -1,7 +1,7 @@
 module.exports = {
   db: {
     mongo: {
-      dbName: 'base-app',
+      dbName: 'auth-app',
       url: 'mongodb://localhost:27017',
     },
   },

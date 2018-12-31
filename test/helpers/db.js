@@ -37,5 +37,10 @@ module.exports = {
       await connection.db(db).collection(collection).deleteMany({});
       connection.close();
     },
+    updateOne: async (query, changes) => {
+      const connection = await MongoClient.connect(await getUrl(), { useNewUrlParser: true });
+      await connection.db(db).collection(collection).updateOne(query, { $set: changes });
+      connection.close();
+    },
   }),
 };

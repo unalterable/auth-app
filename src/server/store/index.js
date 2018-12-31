@@ -1,8 +1,7 @@
 const { MongoClient } = require('mongodb');
 const config = require('config');
-const initItemsCollection = require('./items');
-
-const dbName = config.get('db.mongo.dbName');
+const initAccountCollection = require('./account');
+const initUserCollection = require('./user');
 
 const getConnection = (connectionAttempt => () => {
   if (!connectionAttempt) {
@@ -25,16 +24,15 @@ const getConnection = (connectionAttempt => () => {
   return connectionAttempt;
 })(null);
 
-const initStore = () => {
-  const getCollection = (collectionName) => getConnection()
-    .then(connection => connection.db(dbName).collection(collectionName));
+const getCollection = (collectionName) => getConnection()
+  .then(connection => connection.db(config.get('db.mongo.dbName')).collection(collectionName));
 
-  return {
-    getConnection,
-    collections: {
-      items: initItemsCollection({ getCollection }),
-    },
-  };
-};
+const initStore = () => ({
+  getConnection,
+  collections: {
+    account: initAccountCollection({ getCollection }),
+    user: initUserCollection({ getCollection }),
+  },
+});
 
 module.exports = initStore;
