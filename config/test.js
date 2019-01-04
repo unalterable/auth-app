@@ -7,4 +7,5 @@ module.exports = {
       url: raw(db.getUrl()),
     },
   },
+  jwtKey: 'AN INSECURE SECRET',
 };

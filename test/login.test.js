@@ -52,7 +52,7 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
 
     expect(status).to.equal(200);
     expect(data).to.be.a('string');
-    expect(jwt.verify(data, 'an insecure secret')).to.be.an('object').that.deep.includes({
+    expect(jwt.verify(data, 'AN INSECURE SECRET')).to.be.an('object').that.deep.includes({
       account: { name: account.username },
       user: { name: account.username, emailAddress: account.emailAddress, roles },
     });

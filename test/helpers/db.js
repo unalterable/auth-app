@@ -6,7 +6,7 @@ const mongo = dockerStarter({
   image: 'mongo:4.0.4',
   extraOptions: '--restart on-failure:5',
   containerPort: 27017,
-  publishedPort: 27019,
+  publishedPort: 27027,
 });
 
 

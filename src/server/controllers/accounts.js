@@ -1,6 +1,9 @@
+const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+const config = require('config');
 
 const newAccountSchema = Joi.object().keys({
   username: Joi.string().alphanum().min(3).max(30).required(),
@@ -46,7 +49,7 @@ const initItemController = ({ store }) => {
       };
 
       const expiresIn = 60 * 60 * 24;
-      const token = jwt.sign(claims, 'an insecure secret', { expiresIn });
+      const token = jwt.sign(claims, config.get('jwtKey'), { expiresIn });
 
       res.cookie('jwt', token, { secure: true, httpOnly: true, maxAge: expiresIn });
       res.status(200).send(token);

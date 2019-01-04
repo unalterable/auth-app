@@ -14,9 +14,5 @@ module.exports = ({ getCollection }) => {
     getByName: name => getItems()
       .then(collection => collection
         .findOne({ name }, { projection })),
-    updateById: (id, changes) => getItems()
-      .then(collection => collection
-        .findOneAndUpdate({ id }, { $set: _.omit(changes, ['id']) }, { projection, returnOriginal: false }))
-      .then(result => sanitiseItem(result.value)),
   };
 };
