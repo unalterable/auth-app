@@ -3,27 +3,29 @@ const config = require('config');
 const initAccountCollection = require('./account');
 const initUserCollection = require('./user');
 
+const mongoOpts = { useNewUrlParser: true, autoReconnect: false };
+
 const getAuth = () => config.has('db.mongo.user') && config.has('db.mongo.password')
   ? { auth: { user: config.get('db.mongo.user'), password: config.get('db.mongo.password') } }
   : {};
 
 const getConnection = (connectionAttempt => () => {
   if (!connectionAttempt) {
-    connectionAttempt = Promise.resolve()
-      .then(() => config.get('db.mongo.url'))
-      .then(url => MongoClient.connect(url, { ...getAuth(), useNewUrlParser: true, autoReconnect: false }))
-      .then(conn => {
+    connectionAttempt = (async () => {
+      try {
+        const url = await config.get('db.mongo.url');
+        const connection = await MongoClient.connect(url, { mongoOpts, ...getAuth() });
         console.info('Mongo connection established');
-        conn.on('close', () => {
+
+        connection.on('close', () => {
           console.info('Mongo connection terminated');
           connectionAttempt = null;
         });
-        return conn;
-      })
-      .catch((err) => {
+      } catch (err) {
         connectionAttempt = null;
         throw Error(`Mongo connection failed: ${err.message}`);
-      });
+      }
+    })();
   }
   return connectionAttempt;
 })(null);
