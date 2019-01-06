@@ -6,7 +6,6 @@ import initAccountsController from './controllers/accounts';
 
 const initRoutes = () => {
   const store = initStore();
-  store.getConnection().catch(console.error);
   const accountsController = initAccountsController({ store });
   const app = express();
   app.use(bodyParser.json());
@@ -22,4 +21,3 @@ const initRoutes = () => {
 };
 
 module.exports = initRoutes;
-

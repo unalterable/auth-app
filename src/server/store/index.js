@@ -14,13 +14,15 @@ const getConnection = (connectionAttempt => () => {
     connectionAttempt = (async () => {
       try {
         const url = await config.get('db.mongo.url');
-        const connection = await MongoClient.connect(url, { mongoOpts, ...getAuth() });
+        const connection = await MongoClient.connect(url, { ...mongoOpts, ...getAuth() });
         console.info('Mongo connection established');
 
         connection.on('close', () => {
           console.info('Mongo connection terminated');
           connectionAttempt = null;
         });
+
+        return connection;
       } catch (err) {
         connectionAttempt = null;
         throw Error(`Mongo connection failed: ${err.message}`);
