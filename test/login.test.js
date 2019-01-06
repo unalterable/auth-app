@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const { expect } = require('chai');
 const { db, server } = require('./helpers');
 
+const consoleError = console.error;
+
 const account = { username: 'testUser', password: 'testPassword', emailAddress: 'test@user.com' };
 const roles = ['a role', 'another role'];
 
@@ -27,7 +29,11 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
     await server.stop();
   });
 
+  afterEach(() => { console.error = consoleError; });
+
   it('fails with an incorrect username', async () => {
+    console.error = () => {};
+
     const loginDetails = { username: 'nonExistantUser', password: 'testPassword' };
 
     const { data, status } = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });
@@ -37,6 +43,8 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
   });
 
   it('fails with an incorrect password', async () => {
+    console.error = () => {};
+
     const loginDetails = { username: 'testUser', password: 'badPassword' };
 
     const { data, status } = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });

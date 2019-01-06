@@ -3,6 +3,8 @@ const axios = require('axios');
 const { expect } = require('chai');
 const { db, server } = require('./helpers');
 
+const consoleError = console.error;
+
 describe('Create Account: PUT /api/account', async () => {
   let accountCollection;
   let userCollection;
@@ -19,7 +21,11 @@ describe('Create Account: PUT /api/account', async () => {
     await server.stop();
   });
 
+  afterEach(() => { console.error = consoleError; });
+
   it('fails without an account name', async () => {
+    console.error = () => {};
+
     const reqBody = {};
     const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
 
@@ -31,6 +37,8 @@ describe('Create Account: PUT /api/account', async () => {
   });
 
   it('fails without a password', async () => {
+    console.error = () => {};
+
     const reqBody = { username: 'testUser' };
     const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
 
@@ -42,6 +50,8 @@ describe('Create Account: PUT /api/account', async () => {
   });
 
   it('fails without an email address', async () => {
+    console.error = () => {};
+
     const reqBody = { username: 'testUser', password: 'testPassword' };
     const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
 
