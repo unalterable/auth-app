@@ -20,6 +20,7 @@ const getUrl = (url => async () => {
 
 module.exports = {
   getUrl,
+  container: mongo,
   collectionTools: async ({ db, collection }) => ({
     getAll: async () => {
       const connection = await MongoClient.connect(await getUrl(), { useNewUrlParser: true });

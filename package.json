@@ -8,7 +8,7 @@
     "dev": "concurrently -k -p '{time} {name}:' -t 'HH:ss' -n 'Assets,Server' -c 'green,magenta' 'npm run build-assets:watch' 'npm run server:watch'",
     "start-mongo": "docker run --rm -d mongo:latest",
     "stub-data": "node scripts/stub-data.js",
-    "test": "NODE_ENV=test mocha test/ --exit",
+    "test": "NODE_ENV=test mocha test/ --require test/setup.js --exit",
     "server": "node src/server/index.js",
     "server:watch": "nodemon -w src/ -e js,jsx src/server/index.js",
     "lint": "eslint --ext .js,.jsx --ignore-path .gitignore .",
@@ -47,6 +47,7 @@
     "eslint": "^5.11.1",
     "eslint-plugin-react": "^7.12.0",
     "mocha": "^5.2.0",
+    "mocha-prepare": "^0.1.0",
     "webpack-cli": "^3.1.2"
   }
 }
