@@ -1,5 +1,5 @@
 import { renderToString } from 'react-dom/server';
-import App from '../../ui/components/Application.jsx';
+import App from '../../ui/Application.jsx';
 import html from '../../ui/layout/basic.js';
 
 module.exports = {
