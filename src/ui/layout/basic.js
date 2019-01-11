@@ -1,4 +1,4 @@
-const html = ({ body, title, initialState }) => `
+const html = ({ body, title, initialState, css }) => `
 <!DOCTYPE html>
   <html>
     <head>
@@ -7,6 +7,7 @@ const html = ({ body, title, initialState }) => `
     <body style="margin:0">
       <div id="main-content">${body}</div>
     </body>
+    <style id="jss-server-side">${css}</style>
     <script> window.__initialState__ = ${JSON.stringify(initialState)}</script>
     <script src="./assets/bundle.js"></script>
   </html>

@@ -3,7 +3,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
 
-const theme = createMuiTheme({
+const createTheme = () => createMuiTheme({
   palette: {
     primary: purple,
     secondary: green,
@@ -11,10 +11,15 @@ const theme = createMuiTheme({
   status: {
     danger: 'orange',
   },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
-const Application = ({ children }) => (
-  <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+const Theme = ({ children }) => (
+  <MuiThemeProvider theme={createTheme()}>
+    {children}
+  </MuiThemeProvider>
 );
 
-export default Application;
+export default Theme;
