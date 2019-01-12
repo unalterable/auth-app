@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import axios from 'axios';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,10 +11,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import LockIcon from '@material-ui/icons/LockOutlined';
+
+import Alert from './Alert.jsx';
 
 const styles = theme => ({
   main: {
@@ -54,9 +59,23 @@ class SignIn extends React.Component {
 
   render () {
     const { classes } = this.props;
+    const handleSumbit = async (e) => {
+      e.preventDefault();
+      const { username, password } = this.state;
+      try {
+        await axios.post('/api/authenticate', { username, password });
+      } catch (e) {
+        this.setState({ errMsg: e.response.data });
+      }
+    };
 
     return (
       <main className={classes.main}>
+        <Alert
+          variant="error"
+          message={this.state.errMsg}
+          open={!!this.state.errMsg}
+          onClose={() => this.setState({ errMsg: null })} />
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -65,10 +84,7 @@ class SignIn extends React.Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} onSubmit={(thing) => {
-            thing.preventDefault();
-            console.log('this.state', this.state);
-          }}>
+          <form className={classes.form} onSubmit={(e) => handleSumbit(e)}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="username">Username</InputLabel>
               <Input
@@ -76,31 +92,31 @@ class SignIn extends React.Component {
                 name="username"
                 onChange={({ target }) => this.setState({ username: target.value })}
                 autoFocus
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  onChange={({ target }) => this.setState({ password: target.value })}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
               />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                onChange={({ target }) => this.setState({ password: target.value })}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign in
-            </Button>
-          </form>
-        </Paper>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in
+              </Button>
+            </form>
+          </Paper>
       </main>
     );
   }
