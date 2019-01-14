@@ -9,7 +9,7 @@ const html = ({ body, title, initialState, css }) => `
     </body>
     <style id="jss-server-side">${css}</style>
     <script> window.__initialState__ = ${JSON.stringify(initialState)}</script>
-    <script src="./assets/bundle.js"></script>
+    <script src="/assets/bundle.js"></script>
   </html>
 `;
 
