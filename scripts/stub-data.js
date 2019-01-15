@@ -30,7 +30,7 @@ const devAccount2 = {
 const devUser2 = {
   name : 'devUser',
   emailAddress : 'bob@bob.com',
-  id : '22222222-2222-2222-2222-222222222222"',
+  id : '22222222-2222-2222-2222-222222222222',
   roles: ['user'],
 };
 

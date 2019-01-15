@@ -30,7 +30,7 @@ function ButtonAppBar(props) {
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>
           </Typography>
-          <Button color="inherit"></Button>
+          <Button color="inherit">&nbsp</Button>
         </Toolbar>
       </AppBar>
     </div>

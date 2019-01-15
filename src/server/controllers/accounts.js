@@ -99,8 +99,7 @@ const initItemController = ({ store }) => {
        * if (!user) throw Error(`No user found with id "${userId}"`);
 
        * const { cookie, options } = buildLoginCookie(account, user); */
-      console.info(req.headers);
-      res.send('sdfjio');
+      res.send(JSON.stringify(req.jwt));
     } catch (err) {
       console.error('Authentication Failure:', err.message);
       res.status(401).send('Authentication failed');
