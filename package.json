@@ -7,7 +7,7 @@
     "start": "npm run build-assets && NODE_ENV=production npm run server",
     "dev": "concurrently -k -p '{time} {name}:' -t 'HH:ss' -n 'Assets,Server' -c 'green,magenta' 'npm run build-assets:watch' 'NODE_ENV=development npm run server:watch'",
     "start-mongo": "docker run --rm -d mongo:latest",
-    "stub-data": "node scripts/stub-data.js",
+    "stub-data": "NODE_ENV=development node scripts/stub-data.js",
     "test": "NODE_ENV=test mocha test/ --require test/setup.js --exit",
     "server": "node src/server/index.js",
     "server:watch": "nodemon -w src/ -e js,jsx src/server/index.js",
@@ -57,6 +57,7 @@
     "mocha": "^5.2.0",
     "mocha-prepare": "^0.1.0",
     "nodemon": "^1.18.9",
+    "set-cookie-parser": "^2.2.1",
     "webpack-cli": "^3.1.2"
   }
 }

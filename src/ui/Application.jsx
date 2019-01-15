@@ -1,14 +1,17 @@
 import React from 'react';
+import Route from 'react-router-dom/Route';
 import Theme from './Theme.jsx';
 import TopNav from './components/TopNav.jsx';
 import SignIn from './components/SignIn.jsx';
+import Profile from './components/Profile.jsx';
 
 class Application extends React.Component {
   render() {
     return (
       <Theme>
         <TopNav />
-        <SignIn />
+        <Route path='/' exact component={SignIn}/>
+        <Route path='/profile' exact component={Profile}/>
       </Theme>
     );
   }

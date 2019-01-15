@@ -12,10 +12,11 @@ const initRoutes = () => {
 
   app.use('/assets', express.static('assets'));
 
-  app.get('/', indexController.showIndex);
-
   app.put('/api/account/', accountsController.create);
   app.post('/api/authenticate/', accountsController.authenticate);
+  app.get('/api/profile/', accountsController.profile);
+
+  app.get('/*', indexController.showIndex);
 
   return app;
 };

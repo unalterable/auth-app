@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import axios from 'axios';
+import Redirect from 'react-router-dom/Redirect';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -64,6 +65,7 @@ class SignIn extends React.Component {
       const { username, password } = this.state;
       try {
         await axios.post('/api/authenticate', { username, password });
+        this.props.history.push('/profile');
       } catch (e) {
         this.setState({ errMsg: e.response.data });
       }
@@ -92,31 +94,31 @@ class SignIn extends React.Component {
                 name="username"
                 onChange={({ target }) => this.setState({ username: target.value })}
                 autoFocus
-                />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  onChange={({ target }) => this.setState({ password: target.value })}
-                />
-              </FormControl>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign in
-              </Button>
-            </form>
-          </Paper>
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type="password"
+                onChange={({ target }) => this.setState({ password: target.value })}
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign in
+            </Button>
+          </form>
+        </Paper>
       </main>
     );
   }
