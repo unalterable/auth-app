@@ -6,9 +6,10 @@ import { StaticRouter } from 'react-router-dom';
 import Application from '../../ui/Application.jsx';
 import html from '../../ui/layout/basic.js';
 
+const title = 'DJD-Platform';
+
 module.exports = {
   async showIndex(req, res) {
-    const title = 'Hello World Title';
     const initialState = {};
     const sheetsRegistry = new SheetsRegistry();
     const body = renderToString(
@@ -19,8 +20,5 @@ module.exports = {
       </ JssProvider>
     );
     res.send(html({ title, body, initialState, css: sheetsRegistry.toString() }));
-  },
-  async showData(req, res) {
-    res.json({ hello: 'world' });
   },
 };
