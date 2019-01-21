@@ -32,7 +32,7 @@ const buildJwt = (account, user, expiresIn) => {
 const buildCookieOptions = (expiresIn) => ({
   maxAge: expiresIn*1000,
   httpOnly: true,
-  ...(config.util.getEnv('NODE_ENV') === 'production' ? { secure: true } : {}),
+  /* ...(config.util.getEnv('NODE_ENV') === 'production' ? { secure: true } : {}), */
 });
 
 const buildLoginCookie = (account, user) => {
