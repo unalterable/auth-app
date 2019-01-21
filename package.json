@@ -13,9 +13,9 @@
     "server:watch": "nodemon -w src/ -e js,jsx src/server/index.js",
     "lint": "eslint --ext .js,.jsx --ignore-path .gitignore .",
     "lint-fix": "eslint --ext .js,.jsx --ignore-path .gitignore . --fix",
-    "build-assets": "webpack",
-    "build-assets:watch": "webpack --watch",
-    "eject": "bash scripts/eject.sh"
+    "build-assets": "webpack --config webpack.dev.js",
+    "build-assets:prod": "webpack --config webpack.prod.js",
+    "build-assets:watch": "webpack --config webpack.dev.js --watch"
   },
   "author": "",
   "license": "ISC",

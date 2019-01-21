@@ -8,8 +8,12 @@ module.exports = {
     './src/ui/index.jsx',
   ],
   output: {
-    path: path.resolve(__dirname, 'assets'),
+    path: path.join(__dirname, 'assets'),
     filename: 'bundle.js',
+  },
+  watchOptions: {
+    poll: true,
+    ignored: /node_modules/,
   },
   module: {
     rules: [
