@@ -11,11 +11,11 @@ const validateUserRoles = requiredRoles => (req, res, next) => {
     const decodedJwt = jwt.verify(value, JWT_PUBLIC_KEY);
     const userRoles = _.get(decodedJwt, 'user.roles') || [];
     const userHasAllRoles = requiredRoles.every(neededRole => userRoles.includes(neededRole));
-    if (!userHasAllRoles) throw Error('User ${jwt.user.id} does not have all roles ${requiredRoles.toString}');
+    if (!userHasAllRoles) throw Error(`User ${jwt.user.id} does not have all roles ${requiredRoles.toString}`);
     req.jwt = decodedJwt;
     next();
   } catch (err) {
-    res.status(401).send();
+    res.status(401).send('Unauthorised');
     next(err);
   }
 };

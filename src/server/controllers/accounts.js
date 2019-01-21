@@ -21,7 +21,7 @@ const authenticationSchema = Joi.object().keys({
 
 const buildClaims = (account, user) => ({
   account: { name: account.name },
-  user: { name: user.name, emailAddress: user.emailAddress, roles: user.roles },
+  user: { name: user.name, id: user.id, emailAddress: user.emailAddress, roles: user.roles },
 });
 
 const buildJwt = (account, user, expiresIn) => {

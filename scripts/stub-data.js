@@ -16,7 +16,7 @@ const devUser1 = {
   name : 'devAdmin',
   emailAddress : 'bob@bob.com',
   id : '11111111-1111-1111-1111-111111111112',
-  roles: ['sysadmin', 'user'],
+  roles: ['sysAdmin', 'user'],
 };
 
 const devAccount2 = {

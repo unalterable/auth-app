@@ -6,7 +6,6 @@ import Redirect from 'react-router-dom/Redirect';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -78,7 +77,6 @@ class SignIn extends React.Component {
           message={this.state.errMsg}
           open={!!this.state.errMsg}
           onClose={() => this.setState({ errMsg: null })} />
-        <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockIcon />
