@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build-assets && NODE_ENV=production npm run server",
+    "start": "npm run build-assets:prod && NODE_ENV=production npm run server",
     "dev": "concurrently -k -p '{time} {name}:' -t 'HH:ss' -n 'Assets,Server' -c 'green,magenta' 'npm run build-assets:watch' 'NODE_ENV=development npm run server:watch'",
     "start-mongo": "docker run --rm -d mongo:latest",
     "stub-data": "NODE_ENV=development node scripts/stub-data.js",

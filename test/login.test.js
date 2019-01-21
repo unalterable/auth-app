@@ -64,9 +64,11 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
     const setCookie = setCookieParser(response);
 
     expect(setCookie[0].name).to.equal('jwt');
-    expect(jwt.verify(setCookie[0].value, 'AN INSECURE SECRET')).to.be.an('object').that.deep.includes({
-      account: { name: account.username },
-      user: { name: account.username, emailAddress: account.emailAddress, roles },
-    });
+    const token = jwt.verify(setCookie[0].value, 'AN INSECURE SECRET');
+
+    expect(token).to.be.an('object').that.includes.keys(['account', 'user']);
+    expect(token.account).to.deep.equal({ name: account.username });
+    expect(token.user).to.deep.include({ name: account.username, emailAddress: account.emailAddress, roles });
+    expect(token.user).to.include.key('id');
   });
 });
