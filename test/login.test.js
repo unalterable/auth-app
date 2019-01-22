@@ -1,9 +1,12 @@
 require('../babel');
 const axios = require('axios');
+const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const setCookieParser = require('set-cookie-parser');
 const { expect } = require('chai');
 const { db, server } = require('./helpers');
+
+const getLastMinRange = () => [moment().subtract(1, 'minute').toDate(), moment().toDate()];
 
 const consoleError = console.error;
 
@@ -13,10 +16,12 @@ const roles = ['a role', 'another role'];
 describe('Authenticate Account: POST /api/authenticate', async () => {
   let accountCollection;
   let userCollection;
+  let auditCollection;
 
   before(async () => {
     accountCollection = await db.collectionTools({ db: 'auth-app', collection: 'account' });
     userCollection = await db.collectionTools({ db: 'auth-app', collection: 'user' });
+    auditCollection = await db.collectionTools({ db: 'auth-app', collection: 'audit' });
     await accountCollection.removeAll();
     await userCollection.removeAll();
     await server.start();
@@ -24,6 +29,10 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
     const { status } = await axios.put(`${server.getDomain()}/api/account`, account, { validateStatus: false });
     await userCollection.updateOne({ name: account.username }, { roles });
     expect(status).to.equal(201);
+  });
+
+  beforeEach(async () => {
+    await auditCollection.removeAll();
   });
 
   after(async () => {
@@ -41,6 +50,14 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
 
     expect(status).to.equal(401);
     expect(data).to.be.a('string').that.equals('Authentication failed');
+
+    const audits = await auditCollection.getAll();
+    expect(audits).to.have.length(1);
+    expect(audits[0]).to.deep.include({
+      type: 'AUTHENTICATION_FAILURE',
+      details: { error: `No account found for account "${loginDetails.username}"` },
+    });
+    expect(new Date(audits[0].timestamp)).to.be.within(...getLastMinRange());
   });
 
   it('fails with an incorrect password', async () => {
@@ -52,6 +69,14 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
 
     expect(status).to.equal(401);
     expect(data).to.be.a('string').that.equals('Authentication failed');
+
+    const audits = await auditCollection.getAll();
+    expect(audits).to.have.length(1);
+    expect(audits[0]).to.deep.include({
+      type: 'AUTHENTICATION_FAILURE',
+      details: { error: `Incorrect password for account "${loginDetails.username}"` },
+    });
+    expect(new Date(audits[0].timestamp)).to.be.within(...getLastMinRange());
   });
 
   it('reponds with 200, and responds with a JWT full of claims in set-cookie header', async () => {
@@ -65,10 +90,19 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
 
     expect(setCookie[0].name).to.equal('jwt');
     const token = jwt.verify(setCookie[0].value, 'AN INSECURE SECRET');
-
     expect(token).to.be.an('object').that.includes.keys(['account', 'user']);
     expect(token.account).to.deep.equal({ name: account.username });
     expect(token.user).to.deep.include({ name: account.username, emailAddress: account.emailAddress, roles });
     expect(token.user).to.include.key('id');
+    const users = await userCollection.getAll(); 
+    expect(users.find(u => u.name === token.user.name)).to.include({ id: token.user.id });
+
+    const audits = await auditCollection.getAll();
+    expect(audits).to.have.length(1);
+    expect(audits[0]).to.deep.include({
+      type: 'AUTHENTICATION_SUCCESS',
+      details: { userId: token.user.id },
+    });
+    expect(new Date(audits[0].timestamp)).to.be.within(...getLastMinRange());
   });
 });

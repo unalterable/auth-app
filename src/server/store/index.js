@@ -2,6 +2,7 @@ const { MongoClient } = require('mongodb');
 const config = require('config');
 const initAccountCollection = require('./account');
 const initUserCollection = require('./user');
+const initAuditCollection = require('./audit');
 
 const mongoOpts = { useNewUrlParser: true, autoReconnect: false };
 
@@ -37,10 +38,9 @@ const getCollection = (collectionName) => getConnection()
 
 const initStore = () => ({
   getConnection,
-  collections: {
-    account: initAccountCollection({ getCollection }),
-    user: initUserCollection({ getCollection }),
-  },
+  account: initAccountCollection({ getCollection }),
+  user: initUserCollection({ getCollection }),
+  audit: initAuditCollection({ getCollection }),
 });
 
 module.exports = initStore;

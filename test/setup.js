@@ -17,6 +17,6 @@ const testWrapper = (() => {
 })();
 
 prepare(
-  (done) => { return testWrapper.setup().then(done, done) },
-  (done) => { return testWrapper.tearDown().then(done, done) },
+  (done) => testWrapper.setup().then(done, done),
+  (done) => testWrapper.tearDown().then(done, done),
 );
