@@ -102,6 +102,7 @@ const initAccountsController = ({ store }) => {
        * if (!user) throw Error(`No user found with id "${userId}"`);
 
        * const { cookie, options } = buildLoginCookie(account, user); */
+
       res.send(JSON.stringify(req.jwt));
     } catch (err) {
       console.error('Authentication Failure:', err.message);

@@ -1,3 +1,5 @@
+const config = require('config');
+
 const html = ({ body, title, initialState, css }) => `
 <!DOCTYPE html>
   <html>
@@ -8,8 +10,10 @@ const html = ({ body, title, initialState, css }) => `
     <body style="margin:0">
       <div id="main-content">${body}</div>
       <script> window.__initialState__ = ${JSON.stringify(initialState)}</script>
-      <script src="/assets/bundle.js"></script>
+      <script src="/auth/assets/bundle.js"></script>
     </body>
   </html>
 `;
 export default html;
+
+

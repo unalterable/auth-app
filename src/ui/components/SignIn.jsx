@@ -63,8 +63,8 @@ class SignIn extends React.Component {
       e.preventDefault();
       const { username, password } = this.state;
       try {
-        await axios.post('/api/authenticate', { username, password });
-        this.props.history.push('/profile');
+        await axios.post('/auth/api/authenticate', { username, password });
+        this.props.history.push('/auth/profile');
       } catch (e) {
         this.setState({ errMsg: e.response.data });
       }

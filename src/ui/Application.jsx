@@ -10,8 +10,8 @@ class Application extends React.Component {
     return (
       <Theme>
         <TopNav />
-        <Route path='/' exact component={SignIn}/>
-        <Route path='/profile' exact component={Profile}/>
+        <Route path='/auth' exact component={SignIn}/>
+        <Route path='/auth/profile' exact component={Profile}/>
       </Theme>
     );
   }

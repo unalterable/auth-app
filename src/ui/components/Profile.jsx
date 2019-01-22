@@ -13,7 +13,7 @@ class Profile extends React.Component {
   constructor(props){
     super(props);
     this.state = { profile: null };
-    axios.get('/api/profile').then(({ data }) => {
+    axios.get('/auth/api/profile').then(({ data }) => {
       this.setState({ profile: data });
     });
   }

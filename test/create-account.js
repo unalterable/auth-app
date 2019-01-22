@@ -8,7 +8,7 @@ const consoleError = console.error;
 
 const getLastMinRange = () => [moment().subtract(1, 'minute').toDate(), moment().toDate()];
 
-describe('Create Account: PUT /api/account', async () => {
+describe('Create Account: PUT /auth/api/account', async () => {
   let accountCollection;
   let userCollection;
   let auditCollection;
@@ -36,7 +36,7 @@ describe('Create Account: PUT /api/account', async () => {
     console.error = () => {};
 
     const reqBody = {};
-    const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
+    const { data, status } = await axios.put(`${server.getDomain()}/auth/api/account`, reqBody, { validateStatus: false });
 
     expect(status).to.equal(400);
     expect(data).to.be.a('string').that.equals('Validation error: "username" is required');
@@ -57,7 +57,7 @@ describe('Create Account: PUT /api/account', async () => {
     console.error = () => {};
 
     const reqBody = { username: 'testUser' };
-    const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
+    const { data, status } = await axios.put(`${server.getDomain()}/auth/api/account`, reqBody, { validateStatus: false });
 
     expect(status).to.equal(400);
     expect(data).to.be.a('string').that.equals('Validation error: "password" is required');
@@ -78,7 +78,7 @@ describe('Create Account: PUT /api/account', async () => {
     console.error = () => {};
 
     const reqBody = { username: 'testUser', password: 'testPassword' };
-    const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
+    const { data, status } = await axios.put(`${server.getDomain()}/auth/api/account`, reqBody, { validateStatus: false });
 
     expect(status).to.equal(400);
     expect(data).to.be.a('string').that.equals('Validation error: "emailAddress" is required');
@@ -97,7 +97,7 @@ describe('Create Account: PUT /api/account', async () => {
 
   it('reponds with 200, and creates an account and user entry', async () => {
     const reqBody = { username: 'testUser', password: 'testPassword', emailAddress: 'test@user.com' };
-    const { data, status } = await axios.put(`${server.getDomain()}/api/account`, reqBody, { validateStatus: false });
+    const { data, status } = await axios.put(`${server.getDomain()}/auth/api/account`, reqBody, { validateStatus: false });
 
     expect(status).to.equal(201);
     expect(data).to.be.a('string').that.equals('');

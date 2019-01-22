@@ -11,13 +11,13 @@ const initRoutes = () => {
   const app = express();
   app.use(bodyParser.json());
 
-  app.use('/assets', express.static('assets'));
+  app.use('/auth/assets', express.static('assets'));
 
-  app.put('/api/account/', accountsController.create);
-  app.post('/api/authenticate/', accountsController.authenticate);
-  app.get('/api/profile/', validateUserRoles(['user']), accountsController.profile);
+  app.put('/auth/api/account/', accountsController.create);
+  app.post('/auth/api/authenticate/', accountsController.authenticate);
+  app.get('/auth/api/profile/', validateUserRoles(['user']), accountsController.profile);
 
-  app.get('/*', indexController.showIndex);
+  app.get('/auth/*', indexController.showIndex);
 
   return app;
 };

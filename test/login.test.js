@@ -13,7 +13,7 @@ const consoleError = console.error;
 const account = { username: 'testUser', password: 'testPassword', emailAddress: 'test@user.com' };
 const roles = ['a role', 'another role'];
 
-describe('Authenticate Account: POST /api/authenticate', async () => {
+describe('Authenticate Account: POST /auth/api/authenticate', async () => {
   let accountCollection;
   let userCollection;
   let auditCollection;
@@ -26,7 +26,7 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
     await userCollection.removeAll();
     await server.start();
 
-    const { status } = await axios.put(`${server.getDomain()}/api/account`, account, { validateStatus: false });
+    const { status } = await axios.put(`${server.getDomain()}/auth/api/account`, account, { validateStatus: false });
     await userCollection.updateOne({ name: account.username }, { roles });
     expect(status).to.equal(201);
   });
@@ -46,7 +46,7 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
 
     const loginDetails = { username: 'nonExistantUser', password: 'testPassword' };
 
-    const { data, status } = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });
+    const { data, status } = await axios.post(`${server.getDomain()}/auth/api/authenticate`, loginDetails, { validateStatus: false });
 
     expect(status).to.equal(401);
     expect(data).to.be.a('string').that.equals('Authentication failed');
@@ -65,7 +65,7 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
 
     const loginDetails = { username: 'testUser', password: 'badPassword' };
 
-    const { data, status } = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });
+    const { data, status } = await axios.post(`${server.getDomain()}/auth/api/authenticate`, loginDetails, { validateStatus: false });
 
     expect(status).to.equal(401);
     expect(data).to.be.a('string').that.equals('Authentication failed');
@@ -82,13 +82,14 @@ describe('Authenticate Account: POST /api/authenticate', async () => {
   it('reponds with 200, and responds with a JWT full of claims in set-cookie header', async () => {
     const loginDetails = { username: 'testUser', password: 'testPassword' };
 
-    const response = await axios.post(`${server.getDomain()}/api/authenticate`, loginDetails, { validateStatus: false });
+    const response = await axios.post(`${server.getDomain()}/auth/api/authenticate`, loginDetails, { validateStatus: false });
 
     expect(response.status).to.equal(200);
 
     const setCookie = setCookieParser(response);
 
     expect(setCookie[0].name).to.equal('jwt');
+
     const token = jwt.verify(setCookie[0].value, 'AN INSECURE SECRET');
     expect(token).to.be.an('object').that.includes.keys(['account', 'user']);
     expect(token.account).to.deep.equal({ name: account.username });
