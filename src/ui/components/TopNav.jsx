@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Route from 'react-router-dom/Route';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,11 +27,13 @@ function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit">
-          </IconButton>
+          <Route path='/auth/profile' exact component={() => (
+            <Button color="inherit" component={props => <a href="/spending-analysis/" {...props} />}>Spending Analysis</Button>
+          )}/>
           <Typography variant="h6" color="inherit" className={classes.grow}>
           </Typography>
-          <Button color="inherit">&nbsp</Button>
+          <IconButton className={classes.menuButton} color="inherit">
+          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
